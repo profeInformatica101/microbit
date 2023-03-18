@@ -8,7 +8,14 @@ class RobotAjedrez(Micro_Rover):
         self.wheel_radius = wheel_radius
 
     def avanzar(self, distancia):
-        self.move_forward(distancia)
+        turns = distancia / wheel_circumference
+        # Calculate the time required to move the specified distance
+        # You might need to adjust the speed and calibrate the time value
+        time_to_move = turns * 0.5  # Adjust this value based on your robot's speed
+
+        self.motor(255, 255)
+        sleep(time_to_move)
+        self.motor(0, 0)
 
     def retroceder(self, distancia):
         self.move_backward(distancia)
@@ -24,3 +31,31 @@ class RobotAjedrez(Micro_Rover):
 
     def turns_to_move_one_cell(self):
         return self.cell_size / self.wheel_circumference()
+    
+    
+    def move_forward(self, distance):
+     
+
+    def move_backward(self, distance):
+        turns = distance / wheel_circumference
+        time_to_move = turns * 0.5  # Adjust this value based on your robot's speed
+
+        self.motor(-255, -255)
+        sleep(time_to_move)
+        self.motor(0, 0)
+
+    def turn_left(self, degrees):
+        turns = (degrees / 360) * turns_to_move_one_cell
+        time_to_turn = turns * 0.5  # Adjust this value based on your robot's turning speed
+
+        self.motor(-255, 255)
+        sleep(time_to_turn)
+        self.motor(0, 0)
+
+    def turn_right(self, degrees):
+        turns = (degrees / 360) * turns_to_move_one_cell
+        time_to_turn = turns * 0.5  # Adjust this value based on your robot's turning speed
+
+        self.motor(255, -255)
+        sleep(time_to_turn)
+        self.motor(0, 0)
