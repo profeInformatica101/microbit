@@ -1,8 +1,10 @@
+# Your new file!
 from microbit import *
 import math,ustruct
 from time import sleep_us,ticks_us
 import machine
 class Micro_Rover(object):
+    # Guarda la última duración del eco para el sensor de distancia
     lastEchoDuration = 0
     def __init__(self):
         self.add = 0x43
@@ -118,7 +120,8 @@ class Micro_Rover(object):
 
         self.lastEchoDuration = t
         return round(t * 0.017)
-        def move_forward(self, cells, speed=1):
+        
+    def move_forward(self, cells, speed=1):
         distance_cm = cells * 9.5
         wheel_circumference_cm = 2 * math.pi * 1.5
         wheel_rotations = distance_cm / wheel_circumference_cm
@@ -132,3 +135,30 @@ class Micro_Rover(object):
     def infrared_sensor_value(self):
         sensor_value=pin14.read_digital()<<2|pin15.read_digital()<<1|pin16.read_digital()
         return sensor_value
+
+    def girarDerecha(self, speed=1):
+        wheel_circumference_cm = 2 * math.pi * 1.5
+        turn_distance_cm = 9.5 * math.pi
+        wheel_rotations = turn_distance_cm / wheel_circumference_cm
+
+        time_to_turn_ms = (wheel_rotations * 500 / speed) / 4
+
+        self.motor(255, -255)
+        sleep(time_to_turn_ms)
+        self.motor(0, 0)
+
+    def girarIzquierda(self, speed=1):
+        wheel_circumference_cm = 2 * math.pi * 1.5
+        turn_distance_cm = 9.5 * math.pi
+        wheel_rotations = turn_distance_cm / wheel_circumference_cm
+
+        time_to_turn_ms = (wheel_rotations * 500 / speed) / 4
+
+        self.motor(-255, 255)
+        sleep(time_to_turn_ms)
+        self.motor(0, 0)
+
+    def moverCelda(self, num_celda):
+        for _ in range(num_celda):
+            self.move_forward(cells=1)
+            sleep(500)  # Añade un tiempo de espera de 500 ms entre cada movimiento de celda
