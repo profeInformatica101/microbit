@@ -82,6 +82,7 @@ class Micro_Rover(object):
             green = 0
             blue = 255 - degree * 3
         return int(red),int(green),int(blue)
+    
     def motor(self,left,right):
         left=int(self.map(left,-255,255,-4095,4095))
         right=int(self.map(right,-255,255,-4095,4095))
@@ -103,6 +104,7 @@ class Micro_Rover(object):
         else:
             self.set_pwm(2,0,0)
             self.set_pwm(3,0,0)
+            
     def get_distance(self):
         pin12.write_digital(0)
         sleep_us(2)
@@ -116,3 +118,17 @@ class Micro_Rover(object):
 
         self.lastEchoDuration = t
         return round(t * 0.017)
+        def move_forward(self, cells, speed=1):
+        distance_cm = cells * 9.5
+        wheel_circumference_cm = 2 * math.pi * 1.5
+        wheel_rotations = distance_cm / wheel_circumference_cm
+
+        time_to_move_ms = wheel_rotations * 500 / speed
+
+        self.motor(255, 255)
+        sleep(time_to_move_ms)
+        self.motor(0, 0)
+
+    def infrared_sensor_value(self):
+        sensor_value=pin14.read_digital()<<2|pin15.read_digital()<<1|pin16.read_digital()
+        return sensor_value
